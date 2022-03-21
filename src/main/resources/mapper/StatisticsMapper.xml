@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.ncovapi.dao.StatisticsMapper">
+    <insert id="addStatistics">
+        REPLACE into statistics(createTime, modifyTime, imgUrl, dailyPic, countRemark, confirmedCount, suspectedCount,
+                               curedCount, deadCount, seriousCount, suspectedIncr, confirmedIncr, curedIncr, deadIncr,
+                               seriousIncr, currentConfirmedCount, currentConfirmedIncr, date)
+        VALUES (#{createTime}, #{modifyTime},  #{imgUrl}, #{dailyPic}, #{countRemark}, #{confirmedCount}, #{suspectedCount},
+                #{curedCount},#{deadCount}, #{seriousCount}, #{suspectedIncr}, #{confirmedIncr}, #{curedIncr}, #{deadIncr},
+                #{seriousIncr}, #{currentConfirmedCount}, #{currentConfirmedIncr}, current_date());
+    </insert>
+
+    <select id="selectLatest" resultType="com.example.ncovapi.entity.Statistics">
+        SELECT *
+        FROM statistics
+        ORDER BY modifyTime DESC
+        LIMIT 1
+    </select>
+    <select id="selectAll" resultType="com.example.ncovapi.entity.Statistics">
+        select * from statistics limit 365
+    </select>
+</mapper>
