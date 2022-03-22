@@ -1,8 +1,10 @@
 package com.example.ncovapi.controller;
 
+import com.example.ncovapi.entity.Abroad;
 import com.example.ncovapi.entity.AreaStat;
 import com.example.ncovapi.entity.Statistics;
 import com.example.ncovapi.entity.Timeline;
+import com.example.ncovapi.service.AbroadService;
 import com.example.ncovapi.service.AreaService;
 import com.example.ncovapi.service.StatisticsService;
 import com.example.ncovapi.service.TimelineService;
@@ -23,6 +25,8 @@ public class MainController {
     AreaService areaService;
     @Resource
     TimelineService timelineService;
+    @Resource
+    AbroadService abroadService;
 
     /***
      * @retyrn 返回最新统计数据
@@ -30,7 +34,7 @@ public class MainController {
     @GetMapping("statistics/latest")
     @ResponseBody
     public Statistics latest(){
-        return statisticsservice.today();
+        return statisticsservice.getLatest();
     }
 
     /***
@@ -39,7 +43,7 @@ public class MainController {
     @GetMapping("statistics/history")
     @ResponseBody
     public List<Statistics> history() {
-        return statisticsservice.history();
+        return statisticsservice.getHistory();
     }
 
     /***
@@ -49,6 +53,12 @@ public class MainController {
     @ResponseBody
     public List<AreaStat> area(){
         return areaService.getAllArea();
+    }
+
+    @GetMapping("abroad")
+    @ResponseBody
+    public List<Abroad> abroad() {
+        return abroadService.selectLatest();
     }
 
     @GetMapping("timeline")

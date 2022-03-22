@@ -2,6 +2,7 @@ package com.example.ncovapi.dao;
 
 import com.example.ncovapi.entity.AreaStat;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.cache.annotation.CacheConfig;
 
 import java.util.ArrayList;
 
