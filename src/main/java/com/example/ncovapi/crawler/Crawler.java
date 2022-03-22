@@ -21,6 +21,11 @@ public class Crawler {
      */
     public static final String AREA_INFORMATION_REGEX_TEMPLATE = "\\[(.*)\\]";
     public static final String AREA_INFORMATION_ATTRIBUTE="getAreaStat";
+    /***
+     * 国外信息
+     */
+    public static final String ABROAD_INFORMATION_REGEX_TEMPLATE = "\\[(.*)\\]";
+    public static final String ABROAD_INFORMATION_ATTRIBUTE="getListByCountryTypeService2true";
     /**
      * 总数据
      */

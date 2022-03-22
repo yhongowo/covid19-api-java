@@ -3,6 +3,7 @@ package com.example.ncovapi.crawler;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.example.ncovapi.entity.Abroad;
 import com.example.ncovapi.entity.AreaStat;
 import com.example.ncovapi.entity.Statistics;
 import com.example.ncovapi.entity.Timeline;
@@ -66,6 +67,16 @@ public class Parse {
             AreaStat areaStat = JSON.toJavaObject((JSON) jsonObj, AreaStat.class);
             list.add(areaStat);
             //logger.info(String.valueOf(areaStat));
+        }
+        return list;
+    }
+
+    public static List<Abroad> parseAbroadInformation(String abroadInformation){
+        List<Abroad> list = new ArrayList<>();
+        JSONArray jsonArray = JSON.parseArray(abroadInformation);
+        for(Object jsonObj : jsonArray) {
+            Abroad abroad = JSON.toJavaObject((JSON) jsonObj, Abroad.class);
+            list.add(abroad);
         }
         return list;
     }

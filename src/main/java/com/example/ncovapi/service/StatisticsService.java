@@ -5,6 +5,7 @@ import com.example.ncovapi.entity.Statistics;
 import java.util.List;
 
 public interface StatisticsService {
-    public Statistics today();
-    public List<Statistics> history();
+    Statistics today();
+    List<Statistics> history();
+    void insert(Statistics statistics);
 }

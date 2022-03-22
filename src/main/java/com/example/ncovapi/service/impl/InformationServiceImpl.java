@@ -3,13 +3,17 @@ package com.example.ncovapi.service.impl;
 import com.example.ncovapi.crawler.Crawler;
 import com.example.ncovapi.crawler.Parse;
 import com.example.ncovapi.crawler.Tools;
+import com.example.ncovapi.dao.AbroadMapper;
 import com.example.ncovapi.dao.AreaStatMapper;
 import com.example.ncovapi.dao.StatisticsMapper;
 import com.example.ncovapi.dao.TimelineMapper;
+import com.example.ncovapi.entity.Abroad;
 import com.example.ncovapi.entity.AreaStat;
 import com.example.ncovapi.entity.Statistics;
 import com.example.ncovapi.entity.Timeline;
+import com.example.ncovapi.service.AbroadService;
 import com.example.ncovapi.service.InformationService;
+import com.example.ncovapi.service.StatisticsService;
 import com.example.ncovapi.util.InformationUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,13 +25,11 @@ import java.util.List;
 @Service
 public class InformationServiceImpl implements InformationService {
     @Resource
-    private StatisticsMapper statisticsMapper;
-    @Resource
-    private TimelineMapper timelineMapper;
-    @Resource
-    private AreaStatMapper areaStatMapper;
-    @Resource
     private InformationUtil informationUtil;
+    @Resource
+    private AbroadService abroadService;
+    @Resource
+    private StatisticsService statisticsService;
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -56,26 +58,33 @@ public class InformationServiceImpl implements InformationService {
                 staticInformation = Tools.getInformation(Crawler.STATIC_INFORMATION_REGEX_TEMPLATE_3, "id", Crawler.STATIC_INFORMATION_ATTRIBUTE);
                 statisticsInformation = Parse.parseStatisticsInformation(staticInformation);
             }
-
         }
+
+        String abroadInformation = null;
+        List<Abroad> abroadList = null;
+        try {
+            abroadInformation = Tools.getInformation(Crawler.ABROAD_INFORMATION_REGEX_TEMPLATE,"id",Crawler.ABROAD_INFORMATION_ATTRIBUTE);
+            abroadInformation = abroadInformation.replace("}catch(e){}","");
+            abroadList = Parse.parseAbroadInformation(abroadInformation);
+            abroadService.insertAll(abroadList);
+        } catch (Exception e) {
+            logger.error("解析国外信息失败");
+        }
+
+
         //数据持久化
         String timeLineNews = null;
         String provinceNews = null;
-        String statisticsNews = informationUtil.insertStatistics(statisticsInformation);
 
-        if (statisticsNews != null) {
-            //总数据发生变化，各省数据更新
-            //提取其他信息的json数据
-            String timelineServiceInformation = Tools.getInformation(Crawler.TIME_LINE_REGEX_TEMPLATE, "id", Crawler.TIME_LINE_ATTRIBUTE);
-            String areaInformation = Tools.getInformation(Crawler.AREA_INFORMATION_REGEX_TEMPLATE, "id", Crawler.AREA_INFORMATION_ATTRIBUTE);
-            //解析
-            List<Timeline> timeLineList = Parse.parseTimeLineInformation(timelineServiceInformation);
-            List<AreaStat> areaStatList = Parse.parseAreaInformation(areaInformation);
+        String timelineServiceInformation = Tools.getInformation(Crawler.TIME_LINE_REGEX_TEMPLATE, "id", Crawler.TIME_LINE_ATTRIBUTE);
+        String areaInformation = Tools.getInformation(Crawler.AREA_INFORMATION_REGEX_TEMPLATE, "id", Crawler.AREA_INFORMATION_ATTRIBUTE);
+        //解析
+        List<Timeline> timeLineList = Parse.parseTimeLineInformation(timelineServiceInformation);
+        List<AreaStat> areaStatList = Parse.parseAreaInformation(areaInformation);
 
-            timeLineNews = informationUtil.insertTimeLine(timeLineList);
-            provinceNews = informationUtil.insertProvince(areaStatList);
-        }
-
+        statisticsService.insert(statisticsInformation);
+        timeLineNews = informationUtil.insertTimeLine(timeLineList);
+        provinceNews = informationUtil.insertProvince(areaStatList);
     }
 
 }

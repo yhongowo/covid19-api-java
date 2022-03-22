@@ -3,6 +3,7 @@ package com.example.ncovapi.util;
 import com.example.ncovapi.dao.AreaStatMapper;
 import com.example.ncovapi.dao.StatisticsMapper;
 import com.example.ncovapi.dao.TimelineMapper;
+import com.example.ncovapi.entity.Abroad;
 import com.example.ncovapi.entity.AreaStat;
 import com.example.ncovapi.entity.Statistics;
 import com.example.ncovapi.entity.Timeline;
@@ -131,6 +132,7 @@ public class InformationUtil {
 
         return provinceNews.toString();
     }
+
 
     public String getNumberChange(AreaStat oldAreaStat, AreaStat newAreaStat) {
         StringBuilder sb = new StringBuilder();
