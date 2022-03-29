@@ -4,9 +4,9 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.ncovapi.dao.AbroadMapper">
     <insert id="insertAll">
-        replace into abroad(provinceName, continentName, currentConfirmedCount, confirmedCount, suspectedCount,
+        replace into abroad(provinceName, continents, currentConfirmedCount, confirmedCount, suspectedCount,
                             curedCount, deadCount, date)
-        VALUES (#{provinceName}, #{continentName}, #{currentConfirmedCount}, #{confirmedCount}, #{suspectedCount},
+        VALUES (#{provinceName}, #{continents}, #{currentConfirmedCount}, #{confirmedCount}, #{suspectedCount},
                 #{curedCount}, #{deadCount}, current_date())
     </insert>
 

@@ -3,17 +3,14 @@ package com.example.ncovapi.entity;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
-
 @Component
 @Data
-public class Abroad {
-    private String continents;
+public class City {
     private String provinceName;
-    private int currentConfirmedCount;
+    private String cityName;
     private int confirmedCount;
     private int suspectedCount;
     private int curedCount;
     private int deadCount;
-    private Date date;
+    private long modifyTime;
 }

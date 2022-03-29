@@ -1,9 +1,8 @@
 package com.example.ncovapi.dao;
 
 import com.example.ncovapi.entity.AreaStat;
+import com.example.ncovapi.entity.City;
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.cache.annotation.CacheConfig;
-
 import java.util.ArrayList;
 
 @Mapper
@@ -18,8 +17,10 @@ public interface AreaStatMapper {
 
     int addProvince(AreaStat areaStat);
 
-    int addCity(AreaStat.CitiesBean city);
+    int addCity(City city);
 
-    AreaStat.CitiesBean selectCity(String city);
+    City selectCity(String city);
+
+    ArrayList<City> selectCitiesFromProvince(String province);
 
 }

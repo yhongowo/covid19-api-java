@@ -10,27 +10,29 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
-@CacheConfig(cacheNames = "Statistics")
+
 public class StatisticsServiceImpl implements StatisticsService {
     @Resource
     private StatisticsMapper mapper;
 
     @Override
-    @Cacheable()
+
     public Statistics getLatest() {
         return mapper.selectLatest();
+
     }
 
     @Override
-    @Cacheable()
-    public ArrayList<Statistics> getHistory() {
+
+    public List<Statistics> getHistory() {
         return mapper.selectAll();
     }
 
     @Override
-    @CachePut()
+
     public void insert(Statistics statistics) {
         statistics.setCountRemark("累计确诊 " + statistics.getConfirmedCount() + "例，现存确诊" + statistics.getCurrentConfirmedCount() + "例，重症" +
                 statistics.getSeriousCount() + "例，疑似 " + statistics.getSuspectedCount() + "例，死亡 " + statistics.getDeadCount() + "例，治愈 " +
