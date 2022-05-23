@@ -12,7 +12,7 @@
 - /api/abroad
 - /api/timeline
 
-使用案例：http://http://175.178.174.246/api/statistics/latest
+使用案例：http://175.178.174.246/api/statistics/latest
 返回结果：
 
 
