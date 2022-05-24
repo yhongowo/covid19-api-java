@@ -67,3 +67,4 @@ spring.datasource.url=jdbc:mysql://localhost:3306/2019ncov?useUnicode=true&chara
 spring.datasource.username=2019ncov
 spring.datasource.password=<password>
 ```
+
