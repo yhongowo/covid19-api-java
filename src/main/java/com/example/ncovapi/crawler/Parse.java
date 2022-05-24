@@ -3,10 +3,7 @@ package com.example.ncovapi.crawler;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.example.ncovapi.entity.Abroad;
-import com.example.ncovapi.entity.AreaStat;
-import com.example.ncovapi.entity.Statistics;
-import com.example.ncovapi.entity.Timeline;
+import com.example.ncovapi.entity.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,13 +43,13 @@ public class Parse {
      * @param staticInformation
      * @return
      */
-    public static Statistics parseStatisticsInformation(String staticInformation){
+    public static Stat parseStatisticsInformation(String staticInformation){
         JSONObject jsonObj = JSON.parseObject(staticInformation);
-        Statistics statistics = JSON.toJavaObject(jsonObj,Statistics.class);
-        statistics.setCreateTime(statistics.getCreateTime()/1000);
-        statistics.setModifyTime(statistics.getModifyTime()/1000);
+        DomesticStat domesticStat = JSON.toJavaObject(jsonObj,DomesticStat.class);
+        Stat stat = JSON.toJavaObject(jsonObj, Stat.class);
+        stat.setDomesticStat(domesticStat);
         //logger.info(String.valueOf(statistics));
-        return statistics;
+        return stat;
     }
 
     /**

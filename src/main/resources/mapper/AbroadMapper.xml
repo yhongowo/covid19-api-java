@@ -5,9 +5,9 @@
 <mapper namespace="com.example.ncovapi.dao.AbroadMapper">
     <insert id="insertAll">
         replace into abroad(provinceName, continents, currentConfirmedCount, confirmedCount, suspectedCount,
-                            curedCount, deadCount, date)
+                            curedCount, deadCount,deadCountRank,deadRate, date)
         VALUES (#{provinceName}, #{continents}, #{currentConfirmedCount}, #{confirmedCount}, #{suspectedCount},
-                #{curedCount}, #{deadCount}, current_date())
+                #{curedCount}, #{deadCount},#{deadCountRank},#{deadRate},current_date())
     </insert>
 
     <select id="selectCountry" resultType="com.example.ncovapi.entity.Abroad">

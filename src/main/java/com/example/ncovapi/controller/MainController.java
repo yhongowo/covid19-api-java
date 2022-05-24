@@ -1,12 +1,9 @@
 package com.example.ncovapi.controller;
 
-import com.example.ncovapi.entity.Abroad;
-import com.example.ncovapi.entity.AreaStat;
-import com.example.ncovapi.entity.Statistics;
-import com.example.ncovapi.entity.Timeline;
+import com.example.ncovapi.entity.*;
 import com.example.ncovapi.service.AbroadService;
 import com.example.ncovapi.service.AreaService;
-import com.example.ncovapi.service.StatisticsService;
+import com.example.ncovapi.service.StatService;
 import com.example.ncovapi.service.TimelineService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +17,7 @@ import java.util.List;
 @RequestMapping("api")
 public class MainController {
     @Resource
-    StatisticsService statisticsservice;
+    StatService statisticsservice;
     @Resource
     AreaService areaService;
     @Resource
@@ -33,26 +30,38 @@ public class MainController {
      */
     @GetMapping("statistics/latest")
     @ResponseBody
-    public Statistics latest(){
-        return statisticsservice.getLatest();
+    public List<Stat> latest(){
+        return statisticsservice.selectLatest();
     }
 
     /***
      * @return 返回历史统计数据
      */
-    @GetMapping("statistics/history")
+    @GetMapping("statistics/domestic/all")
     @ResponseBody
-    public List<Statistics> history() {
-        return statisticsservice.getHistory();
+    public List<DomesticStat> domesticAll() {
+        return statisticsservice.selectDomesticAll();
+    }
+
+    @GetMapping("statistics/global/all")
+    @ResponseBody
+    public List<GlobalStat> globalAll() {
+        return statisticsservice.selectGlobalAll();
     }
 
     /***
-     * @return 返回所有地区数据
+     * @return 返回所有省份数据
      */
-    @GetMapping("province/all")
+    @GetMapping("province")
     @ResponseBody
-    public List<AreaStat> area(){
-        return areaService.getAllArea();
+    public List<AreaStat> provinceAll(){
+        return areaService.getProvinceAll();
+    }
+
+    @GetMapping("city")
+    @ResponseBody
+    public List<City> cityAll(){
+        return areaService.getCityAll();
     }
 
     @GetMapping("abroad")

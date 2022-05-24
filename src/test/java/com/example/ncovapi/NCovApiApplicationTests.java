@@ -13,7 +13,7 @@ class NCovApiApplicationTests {
     @Resource
     InformationService informationService;
     @Test
-    void contextLoads() {
+    void getNews() {
         informationService.getNews();
     }
 

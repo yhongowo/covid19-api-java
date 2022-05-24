@@ -2,30 +2,48 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.ncovapi.dao.AreaStatMapper">
     <insert id="addProvince">
-        replace into
-            province(provinceName,provinceShortName,confirmedCount,suspectedCount,curedCount,deadCount,`comment`,modifyTime)
-        values
-            (#{provinceName},#{provinceShortName},#{confirmedCount},#{suspectedCount},#{curedCount},#{deadCount},#{comment},#{modifyTime})
+        replace into province(provinceName, provinceShortName, confirmedCount, suspectedCount, curedCount, deadCount,
+                              comment, modifyTime, currentConfirmedCount)
+        VALUES (#{provinceName}, #{provinceShortName}, #{confirmedCount}, #{suspectedCount}, #{curedCount},
+                #{deadCount}, #{comment}, #{modifyTime}, #{currentConfirmedCount})
     </insert>
     <insert id="addCity">
-        replace into city(cityName,confirmedCount,suspectedCount,curedCount,deadCount,provinceName,modifyTime)
-        values
-            (#{cityName},#{confirmedCount},#{suspectedCount},#{curedCount},#{deadCount},#{provinceName},#{modifyTime})
+        replace into city(provinceName, cityName, confirmedCount, curedCount, deadCount, suspectedCount, modifyTime,
+                          currentConfirmedCount)
+        VALUES (#{provinceName},#{cityName},#{confirmedCount},#{curedCount},#{deadCount},#{suspectedCount},#{modifyTime},#{currentConfirmedCount})
     </insert>
     <select id="selectProvince" resultType="com.example.ncovapi.entity.AreaStat">
-        select * from province
+        select *
+        from province
         order by modifyTime
         limit 1
     </select>
     <select id="selectCity" resultType="com.example.ncovapi.entity.City">
-        select * from city where cityName=#{0} ORDER BY modifyTime DESC limit 1
+        select *
+        from city
+        where cityName = #{0}
+        ORDER BY modifyTime DESC
+        limit 1
     </select>
-    <select id="selectAllProvince" resultType="com.example.ncovapi.entity.AreaStat">
-        select * from province
+    <select id="selectProvinceAll" resultType="com.example.ncovapi.entity.AreaStat">
+        select provinceName,
+               provinceShortName,
+               confirmedCount,
+               suspectedCount,
+               curedCount,
+               deadCount,
+               comment,
+               modifyTime,
+               currentConfirmedCount
+        from province
     </select>
     <select id="selectCitiesFromProvince" resultType="com.example.ncovapi.entity.City">
-        select provinceName,cityName,confirmedCount,curedCount,deadCount,suspectedCount,modifyTime
+        select provinceName, cityName, confirmedCount, curedCount, deadCount, suspectedCount, modifyTime
         from city
-        where provinceName =#{province}
+        where provinceName = #{province}
+    </select>
+    <select id="selectCityAll" resultType="com.example.ncovapi.entity.City">
+        select provinceName, cityName, confirmedCount, curedCount, deadCount, suspectedCount, modifyTime
+        from city
     </select>
 </mapper>

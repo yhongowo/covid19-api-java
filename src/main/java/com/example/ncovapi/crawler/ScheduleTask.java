@@ -15,8 +15,8 @@ public class ScheduleTask {
     @Resource
     InformationService informationService;
 
-    //0点开始每4h爬取一次数据
-    @Scheduled(cron = "0 0 0-4 * * ? ", zone = "")
+    //0点开始每6h爬取一次数据
+    @Scheduled(cron = "0 0 0-6 * * ? ", zone = "")
     public void task(){
         logger.info("开始执行定时任务...");
         informationService.getNews();

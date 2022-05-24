@@ -20,8 +20,13 @@ public class AreaServiceImpl implements AreaService {
 
     @Override
     @Cacheable
-    public List<AreaStat> getAllArea() {
-        return areaStatMapper.selectAllProvince();
+    public List<AreaStat> getProvinceAll() {
+        return areaStatMapper.selectProvinceAll();
+    }
+
+    @Override
+    public List<City> getCityAll() {
+        return null;
     }
 
     @Override

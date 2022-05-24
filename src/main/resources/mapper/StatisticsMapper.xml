@@ -1,22 +1,92 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.ncovapi.dao.StatisticsMapper">
-    <insert id="addStatistics">
-        REPLACE into statistics(createTime, modifyTime, imgUrl, dailyPic, countRemark, confirmedCount, suspectedCount,
-                               curedCount, deadCount, seriousCount, suspectedIncr, confirmedIncr, curedIncr, deadIncr,
-                               seriousIncr, currentConfirmedCount, currentConfirmedIncr, date)
-        VALUES (#{createTime}, #{modifyTime},  #{imgUrl}, #{dailyPic}, #{countRemark}, #{confirmedCount}, #{suspectedCount},
-                #{curedCount},#{deadCount}, #{seriousCount}, #{suspectedIncr}, #{confirmedIncr}, #{curedIncr}, #{deadIncr},
-                #{seriousIncr}, #{currentConfirmedCount}, #{currentConfirmedIncr}, current_date());
+    <insert id="addDomestic">
+        REPLACE into domestic_stat(currentConfirmedCount, currentConfirmedIncr, confirmedCount, confirmedIncr,
+                                   suspectedCount, suspectedIncr, curedCount, curedIncr, deadCount, deadIncr,
+                                   seriousCount,
+                                   seriousIncr, countRemark, dailyPic, imgUrl, date)
+        VALUES (#{currentConfirmedCount}, #{currentConfirmedIncr}, #{confirmedCount}, #{confirmedIncr},
+                #{suspectedCount},
+                #{suspectedIncr}, #{curedCount}, #{curedIncr}, #{deadCount}, #{deadIncr}, #{seriousCount},
+                #{seriousIncr}, #{countRemark},
+                #{dailyPic}, #{imgUrl}, current_date());
     </insert>
+    <insert id="addGlobal">
+        REPLACE INTO global_stat(currentConfirmedCount, confirmedCount, curedCount, deadCount, currentConfirmedIncr,
+                                 confirmedIncr, curedIncr, deadIncr, yesterdayConfirmedCountIncr, date)
+        VALUES (#{currentConfirmedCount}, #{confirmedCount}, #{curedCount}, #{deadCount}, #{currentConfirmedIncr},
+                #{confirmedIncr}, #{curedIncr}, #{deadIncr}, #{yesterdayConfirmedCountIncr}, current_date())
+    </insert>
+    <select id="selectDomesticLatest" resultType="com.example.ncovapi.entity.DomesticStat">
+        SELECT currentConfirmedCount,
+               currentConfirmedIncr,
+               confirmedCount,
+               confirmedIncr,
+               suspectedCount,
+               suspectedIncr,
+               curedCount,
+               curedIncr,
+               deadCount,
+               deadIncr,
+               seriousCount,
+               seriousIncr,
+               countRemark,
+               dailyPic,
+               imgUrl,
+               date
+        FROM domestic_stat
+        order by date desc
+        limit 1;
+    </select>
+    <select id="selectGlobalLatest" resultType="com.example.ncovapi.entity.GlobalStat">
+        select currentConfirmedCount,
+               confirmedCount,
+               curedCount,
+               deadCount,
+               currentConfirmedIncr,
+               confirmedIncr,
+               curedIncr,
+               deadIncr,
+               yesterdayConfirmedCountIncr,
+               date
+        from global_stat
+        order by date desc
+        limit 1
+    </select>
+    <select id="selectDomesticAll" resultType="com.example.ncovapi.entity.DomesticStat">
+        select currentConfirmedCount,
+               currentConfirmedIncr,
+               confirmedCount,
+               confirmedIncr,
+               suspectedCount,
+               suspectedIncr,
+               curedCount,
+               curedIncr,
+               deadCount,
+               deadIncr,
+               seriousCount,
+               seriousIncr,
+               countRemark,
+               dailyPic,
+               imgUrl,
+               date,
+               yesterdayConfirmedCountIncr,
+               yesterdaySuspectedCountIncr
+        from domestic_stat
+    </select>
+    <select id="selectGlobalAll" resultType="com.example.ncovapi.entity.GlobalStat">
+        select currentConfirmedCount,
+               confirmedCount,
+               curedCount,
+               deadCount,
+               currentConfirmedIncr,
+               confirmedIncr,
+               curedIncr,
+               deadIncr,
+               yesterdayConfirmedCountIncr,
+               date
+        from global_stat
+    </select>
 
-    <select id="selectLatest" resultType="com.example.ncovapi.entity.Statistics">
-        SELECT *
-        FROM statistics
-        ORDER BY modifyTime DESC
-        LIMIT 1
-    </select>
-    <select id="selectAll" resultType="com.example.ncovapi.entity.Statistics">
-        select * from statistics
-    </select>
 </mapper>

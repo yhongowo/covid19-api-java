@@ -10,7 +10,7 @@ import java.sql.Date;
 @Component
 @Data
 @NoArgsConstructor
-public class GlobalStatistics {
+public class GlobalStat {
     private int currentConfirmedCount;
     private int confirmedCount;
     private int curedCount;

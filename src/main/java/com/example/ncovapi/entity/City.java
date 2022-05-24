@@ -9,6 +9,7 @@ public class City {
     private String provinceName;
     private String cityName;
     private int confirmedCount;
+    private int currentConfirmedCount;
     private int suspectedCount;
     private int curedCount;
     private int deadCount;

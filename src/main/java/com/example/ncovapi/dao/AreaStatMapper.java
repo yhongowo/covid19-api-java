@@ -13,7 +13,9 @@ public interface AreaStatMapper {
      */
     AreaStat selectProvince(String provinceName);
 
-    ArrayList<AreaStat> selectAllProvince();
+    ArrayList<AreaStat> selectProvinceAll();
+
+    ArrayList<City> selectCityAll();
 
     int addProvince(AreaStat areaStat);
 

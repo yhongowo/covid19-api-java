@@ -5,7 +5,7 @@ import com.example.ncovapi.crawler.Parse;
 import com.example.ncovapi.crawler.Tools;
 import com.example.ncovapi.entity.Abroad;
 import com.example.ncovapi.entity.AreaStat;
-import com.example.ncovapi.entity.Statistics;
+import com.example.ncovapi.entity.Stat;
 import com.example.ncovapi.entity.Timeline;
 import com.example.ncovapi.service.*;
 import org.slf4j.Logger;
@@ -20,7 +20,7 @@ public class InformationServiceImpl implements InformationService {
     @Resource
     private AbroadService abroadService;
     @Resource
-    private StatisticsService statisticsService;
+    private StatService statService;
     @Resource
     private TimelineService timelineService;
     @Resource
@@ -41,17 +41,22 @@ public class InformationServiceImpl implements InformationService {
             String abroadInformation = Tools.getInformation(Crawler.ABROAD_INFORMATION_REGEX_TEMPLATE,"id",Crawler.ABROAD_INFORMATION_ATTRIBUTE)
                     .replace("}catch(e){}","");
             //解析
-            Statistics statisticsInformation = Parse.parseStatisticsInformation(staticInformation);
+            Stat statInformation = Parse.parseStatisticsInformation(staticInformation);
             List<Timeline> timeLineList = Parse.parseTimeLineInformation(timelineServiceInformation);
             List<AreaStat> areaStatList = Parse.parseAreaInformation(areaInformation);
             List<Abroad> abroadList = Parse.parseAbroadInformation(abroadInformation);
             //持久化
-            statisticsService.insert(statisticsInformation);
+            statService.insert(statInformation);
             timelineService.insertTimeLine(timeLineList);
             areaService.updateArea(areaStatList);
             abroadService.insertAll(abroadList);
         } catch (Exception e){
             logger.error("数据持久化失败");
+            e.printStackTrace();
+            StackTraceElement stackTraceElement= e.getStackTrace()[0];
+            System.out.println("File="+stackTraceElement.getFileName());
+            System.out.println("Line="+stackTraceElement.getLineNumber());
+            System.out.println("Method="+stackTraceElement.getMethodName());
         } finally {
             Tools.page = null;
         }

@@ -1,5 +1,6 @@
 package com.example.ncovapi.entity;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
@@ -15,5 +16,9 @@ public class Abroad {
     private int suspectedCount;
     private int curedCount;
     private int deadCount;
+    //update
+    private int deadCountRank;
+    private float deadRate;
+    @JSONField(format="yyyy-MM-dd")
     private Date date;
 }

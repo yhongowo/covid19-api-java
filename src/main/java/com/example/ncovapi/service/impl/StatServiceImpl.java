@@ -1,44 +1,64 @@
 package com.example.ncovapi.service.impl;
 
 import com.example.ncovapi.dao.StatisticsMapper;
+import com.example.ncovapi.entity.DomesticStat;
+import com.example.ncovapi.entity.GlobalStat;
 import com.example.ncovapi.entity.Stat;
-import com.example.ncovapi.service.StatisticsService;
+import com.example.ncovapi.service.StatService;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @CacheConfig(cacheNames = "Stat")
-public class StatisticsServiceImpl implements StatisticsService {
+public class StatServiceImpl implements StatService {
     @Resource
     private StatisticsMapper mapper;
 
     @Override
-    @Cacheable(cacheNames = "latest",key = "#root.methodName")
+    @Cacheable(cacheNames = "latest", key = "#root.methodName")
     public List<Stat> selectLatest() {
-        List<Stat> latest = mapper.selectLatest();
-        latest.get(0).setGlobalStatistics(mapper.selectGlobalLatest());
-        return latest;
+        //get data
+        DomesticStat domesticStat = mapper.selectDomesticLatest();
+        GlobalStat globalStat = mapper.selectGlobalLatest();
+        //combine
+        Stat stat = new Stat();
+        stat.setGlobalStatistics(globalStat);
+        stat.setDomesticStat(domesticStat);
+        //store into list
+        List<Stat> list = new ArrayList<>();
+        list.add(stat);
+        //return a list
+        return list;
     }
 
     @Override
-    @Cacheable(cacheNames = "all",key = "#root.methodName")
-    public List<Stat> selectAll() {
-        return mapper.selectAll();
+    @Cacheable(cacheNames = "domesticAll", key = "#root.methodName")
+    public List<DomesticStat> selectDomesticAll() {
+        return mapper.selectDomesticAll();
+    }
+
+    @Override
+    @Cacheable(cacheNames = "globalAll", key = "#root.methodName")
+    public List<GlobalStat> selectGlobalAll() {
+        return mapper.selectGlobalAll();
     }
 
     @Override
     @CachePut
     public void insert(Stat stat) {
-        stat.setCountRemark("累计确诊 " + stat.getConfirmedCount() + "例，现存确诊" + stat.getCurrentConfirmedCount() + "例，重症" +
-                stat.getSeriousCount() + "例，疑似 " + stat.getSuspectedCount() + "例，死亡 " + stat.getDeadCount() + "例，治愈 " +
-                stat.getCuredCount() + "例");
-
-        mapper.addDomestic(stat);
+//        DomesticStat domesticStat = stat.getDomesticStat();
+//        domesticStat.setCountRemark("累计确诊 " + domesticStat.getConfirmedCount() + "例，现存确诊" +
+//                domesticStat.getCurrentConfirmedCount() + "例，重症" + domesticStat.getSeriousCount() + "例，疑似 " +
+//                domesticStat.getSuspectedCount() + "例，死亡 " + domesticStat.getDeadCount() + "例，治愈 " +
+//                domesticStat.getCuredCount() + "例");
+//        stat.setDomesticStat(domesticStat);
+        mapper.addDomestic(stat.getDomesticStat());
         mapper.addGlobal(stat.getGlobalStatistics());
     }
 }
